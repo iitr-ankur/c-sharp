@@ -504,6 +504,10 @@ namespace PubNubMessaging.Core
         {
             bool networkConnection;
             networkConnection = ClientNetworkStatus.GetInternetStatus ();
+            if (!networkConnection)
+            {
+                return base.InternetConnectionStatus<T>(channel, errorCallback, rawChannels);
+            }
             return networkConnection;
         }
 

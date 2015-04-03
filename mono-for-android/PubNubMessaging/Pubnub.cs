@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Concurrent;
 
 namespace PubNubMessaging.Core
 {
@@ -398,6 +399,9 @@ namespace PubNubMessaging.Core
                 pubnub.JsonPluggableLibrary = value;
             }
         }
+
+        public ConcurrentDictionary<string, bool> ChannelInternetStatus { get { return pubnub.channelInternetStatus; } }
+        public ConcurrentDictionary<string, long> ChannelSubscribeStatus { get { return pubnub.multiChannelSubscribe; } }
 
         #endregion
 

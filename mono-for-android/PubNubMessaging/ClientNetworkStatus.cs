@@ -140,6 +140,7 @@ namespace PubNubMessaging.Core
                 }
                 request = (HttpWebRequest)WebRequest.Create("http://pubsub.pubnub.com");
                 if(request!= null){
+                System.Diagnostics.Debug.WriteLine("Check internet at {0}, seconds:  {1}", DateTime.Now.ToString(), DateTime.Now.TimeOfDay.TotalSeconds.ToString());
                     request.Timeout = HeartbeatInterval * 1000;
                     request.ContentType = "application/json";
                     if(response!=null){
@@ -165,7 +166,7 @@ namespace PubNubMessaging.Core
                         }
                     } 
                 }
-                #elif(__MonoCS__)
+#elif(__MonoCS__)
                 using (UdpClient udp = new UdpClient ("pubsub.pubnub.com", 80)) {
                     IPAddress localAddress = ((IPEndPoint)udp.Client.LocalEndPoint).Address;
                     if (udp != null && udp.Client != null && udp.Client.RemoteEndPoint != null) {
@@ -178,8 +179,8 @@ namespace PubNubMessaging.Core
                         callback (true);
                     }
                 }
-                #else
-                using (UdpClient udp = new UdpClient("pubsub.pubnub.com", 80))
+#else
+                    using (UdpClient udp = new UdpClient("pubsub.pubnub.com", 80))
                 {
                     IPAddress localAddress = ((IPEndPoint)udp.Client.LocalEndPoint).Address;
                     EndPoint remotepoint = udp.Client.RemoteEndPoint;

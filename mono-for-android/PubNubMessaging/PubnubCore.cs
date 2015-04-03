@@ -81,9 +81,13 @@ namespace PubNubMessaging.Core
         bool _enableJsonEncodingForPublish = true;
         LoggingMethod.Level _pubnubLogLevel = LoggingMethod.Level.Off;
         PubnubErrorFilter.Level _errorLevel = PubnubErrorFilter.Level.Info;
-        protected ConcurrentDictionary<string, long> multiChannelSubscribe = new ConcurrentDictionary<string, long> ();
+        
+        // Made it public to check if channel is unsubscribed.
+        public ConcurrentDictionary<string, long> multiChannelSubscribe = new ConcurrentDictionary<string, long>();
         ConcurrentDictionary<string, PubnubWebRequest> _channelRequest = new ConcurrentDictionary<string, PubnubWebRequest> ();
-        protected ConcurrentDictionary<string, bool> channelInternetStatus = new ConcurrentDictionary<string, bool> ();
+        
+        // Made this public to check for internet connectivity before publish.
+        public ConcurrentDictionary<string, bool> channelInternetStatus = new ConcurrentDictionary<string, bool>();
         protected ConcurrentDictionary<string, int> channelInternetRetry = new ConcurrentDictionary<string, int> ();
         ConcurrentDictionary<string, Timer> _channelReconnectTimer = new ConcurrentDictionary<string, Timer> ();
         protected ConcurrentDictionary<Uri, Timer> channelLocalClientHeartbeatTimer = new ConcurrentDictionary<Uri, Timer> ();
