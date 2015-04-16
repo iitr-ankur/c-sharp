@@ -5,7 +5,6 @@ namespace PubNubMessaging.Core
 {
     public class Pubnub
     {
-
         #region "PubNub API Channel Methods"
 
         public void Subscribe<T> (string channel, Action<T> userCallback, Action<T> connectCallback, Action<PubnubClientError> errorCallback)

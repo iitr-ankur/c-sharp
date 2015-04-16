@@ -3,7 +3,7 @@ using System.Threading;
 using System.Net.Sockets;
 using System.Net;
 using System.IO;
-
+ 
 namespace PubNubMessaging.Core
 {
     #region "Network Status -- code split required"
@@ -151,13 +151,15 @@ namespace PubNubMessaging.Core
                     if(response != null){
                         if(((HttpWebResponse)response).ContentLength <= 0){
                             _status = false;
+							System.Diagnostics.Debug.WriteLine("Internet error: response.ContentLength < = 0");
                             throw new Exception("Failed to connect");
                         } else {
                             using(Stream dataStream = response.GetResponseStream ()){
                                 using(StreamReader reader = new StreamReader (dataStream)){
                                     string responseFromServer = reader.ReadToEnd ();
                                     LoggingMethod.WriteToLog(string.Format("DateTime {0}, Response:{1}", DateTime.Now.ToString(), responseFromServer), LoggingMethod.LevelInfo);
-                                    _status = true;
+									System.Diagnostics.Debug.WriteLine("Internet is OK");
+									_status = true;
                                     callback(true);
                                     reader.Close();
                                 }
@@ -196,10 +198,12 @@ namespace PubNubMessaging.Core
             catch (WebException webEx){
 
                 if(webEx.Message.Contains("404")){
+					System.Diagnostics.Debug.WriteLine("Internet is OK: 404");
                     _status =true;
                     callback(true);
                 } else {
                     _status =false;
+					System.Diagnostics.Debug.WriteLine("Internet Issue");
                     ParseCheckSocketConnectException<T>(webEx, channels, errorCallback, callback);
                 }
             }

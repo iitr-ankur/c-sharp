@@ -71,13 +71,13 @@ namespace PubNubMessaging.Core
         int _pubnubWebRequestCallbackIntervalInSeconds = 310;
         int _pubnubOperationTimeoutIntervalInSeconds = 15;
         int _pubnubNetworkTcpCheckIntervalInSeconds = 15;
-        int _pubnubNetworkCheckRetries = 50;
+		int _pubnubNetworkCheckRetries = int.MaxValue;
         int _pubnubWebRequestRetryIntervalInSeconds = 10;
         int _pubnubPresenceHeartbeatInSeconds = 0;
         int _presenceHeartbeatIntervalInSeconds = 0;
         bool _enableResumeOnReconnect = true;
         bool _uuidChanged = false;
-        protected bool overrideTcpKeepAlive = true;
+		protected bool overrideTcpKeepAlive = true;
         bool _enableJsonEncodingForPublish = true;
         LoggingMethod.Level _pubnubLogLevel = LoggingMethod.Level.Off;
         PubnubErrorFilter.Level _errorLevel = PubnubErrorFilter.Level.Info;
@@ -401,7 +401,13 @@ namespace PubNubMessaging.Core
 
                     if (channelInternetStatus.ContainsKey (channel)
                     && (netState.Type == ResponseType.Subscribe || netState.Type == ResponseType.Presence)) {
-                        if (channelInternetStatus [channel]) {
+						// Check if Internet connection is back if it was lost earlier.
+						if(!channelInternetStatus [channel])
+						{
+							channelInternetStatus [channel] = CheckInternetConnectionStatus<T> (pubnetSystemActive, netState.ErrorCallback, netState.Channels);
+						}
+
+						if (channelInternetStatus [channel]) {
                             //Reset Retry if previous state is true
                             channelInternetRetry.AddOrUpdate (channel, 0, (key, oldValue) => 0);
                         } else {
